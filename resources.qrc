@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/VideoSyncB.png</file>
+        <file>icons/VideoSyncG.png</file>
+        <file>icons/VideoSyncR.png</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,44 @@
+; ---------------------------------------------------------------------------
+; VideoSync configuration (sample)
+;
+; Copy this file next to VideoSync.exe and rename it to "VideoSync.ini".
+; If no VideoSync.ini exists, the app creates one with these defaults on first
+; run, so copying is optional.
+;
+; INI format keeps Windows paths readable - no backslash escaping needed.
+; ---------------------------------------------------------------------------
+
+[General]
+; How often (seconds) to re-scan all source folders, in case the file watcher
+; misses an event.
+pollIntervalSeconds=60
+
+; How long (seconds) to wait after the last detected change before syncing,
+; so a burst of file activity only triggers one sync.
+debounceSeconds=3
+
+[Logging]
+; Logging is optional and OFF by default. Set enabled=true to append activity
+; to the log file below.
+enabled=false
+
+; Log file path. Relative paths are resolved next to VideoSync.exe; absolute
+; paths (e.g. C:\Logs\VideoSync.log) are used as-is.
+file=VideoSync.log
+
+; ---------------------------------------------------------------------------
+; Sync pairs
+;
+; Every section other than [General] and [Logging] defines one sync pair.
+; The section name is just a label. Files under "source" are MOVED into
+; "destination" (directory tree is replicated, source is emptied).
+; Add as many pairs as you like.
+; ---------------------------------------------------------------------------
+
+[Movies]
+source=D:\Torrents\Video\Movies
+destination=\\Nas\data\Video\Movies
+
+[TVShows]
+source=D:\Torrents\Video\TVShows
+destination=\\Nas\data\Video\TVShows
