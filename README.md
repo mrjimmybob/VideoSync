@@ -29,7 +29,17 @@ and a green icon while syncing.
 
 ## Building
 
-With Qt and MinGW on your `PATH`:
+The simplest path is the included batch scripts (they use the Qt-bundled
+CMake / Ninja / MinGW toolchain — edit the paths at the top of `build.bat` if
+your Qt install differs):
+
+- **`build.bat`** — builds a release and runs `windeployqt`, producing a
+  ready-to-run folder in `build\release\` (exe + Qt DLLs + plugins).
+- **`box.bat`** — one-click: runs `build.bat`, then packages everything into a
+  single standalone `build\Publish\VideoSync_boxed.exe` (see
+  [Single-file build](#single-file-build-boxed)).
+
+To build manually instead, with Qt and MinGW on your `PATH`:
 
 ```sh
 cmake -S . -B build -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release \
@@ -39,8 +49,18 @@ cmake --build build
 
 Or open `CMakeLists.txt` in Qt Creator with the MinGW kit.
 
-To bundle the Qt runtime DLLs alongside a release build, run `build.bat` (it
-invokes `windeployqt`).
+### Single-file build (boxed)
+
+`box.bat` (or `make_box.ps1` on its own, after `build.bat`) uses
+[Enigma Virtual Box](https://enigmaprotector.com/en/aboutvb.html) to embed the
+Qt runtime into one portable `VideoSync_boxed.exe` — no DLLs to ship.
+
+`make_box.ps1` regenerates `VideoSync.evb` from `build\release` and boxes only
+the runtime (DLLs + plugin folders). It deliberately **does not** box
+`VideoSync.ini` or `VideoSync.log`, so the config and log remain external,
+editable files next to the boxed exe. To distribute, copy
+`VideoSync_boxed.exe` and place a `VideoSync.ini` beside it (one is generated on
+first run if missing).
 
 ## Configuration
 
@@ -101,5 +121,8 @@ file. Console/debugger output is unaffected.
 | `mainwindow.{h,cpp}` | Unused stub (no main window) |
 | `resources.qrc`, `icons/` | Tray icons (blue = idle, green = syncing) |
 | `CMakeLists.txt` | Build configuration |
-| `build.bat` | `windeployqt` packaging helper |
+| `build.bat` | Build a release + `windeployqt` into `build\release\` |
+| `box.bat` | One-click: build, then package into a single boxed exe |
+| `make_box.ps1` | Generates `VideoSync.evb` and runs Enigma Virtual Box |
+| `VideoSync.evb` | Generated Enigma Virtual Box project (boxing input) |
 | `VideoSync.ini.sample` | Documented configuration template |
